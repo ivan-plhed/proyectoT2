@@ -16,11 +16,13 @@ class UserFactory extends Factory
     {
         $name = $this->faker->name();
         return [
+            'dni' => $this->faker->numerify('########') . Str::upper($this->faker->randomLetter()),
             'name' => $name,
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt($name),
             'role' => 'user',
+            'api_token' => 'uc6KqmAIUj',
             'remember_token' => Str::random(10),
         ];
     }
