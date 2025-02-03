@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UserController;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,10 +19,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $productos = Producto::all();
+    return view('producto.index', compact('productos'));
 });
 
-Route::resource('user', UserController::class);
+Route::get('login', [LoginController::class, 'loginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+
+Route::get('carrito', [CarritoController::class, 'carrito'])->middleware('auth');
+
+Route::middleware('role', ['role:admin'])
 
 Route::resource('producto', ProductoController::class)->only('index', 'show');
 
