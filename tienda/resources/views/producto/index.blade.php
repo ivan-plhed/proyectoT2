@@ -1,7 +1,7 @@
 @extends('plantilla')
 @section('titulo', 'Inicio')
 @section('contenido')
-    <div class="row container d-flex">
+    <div class="row container d-flex justify-content-evenly">
         @forelse ($productos as $producto)
             <div class="card d-flex flex-column m-4" style="width: 18rem;">
                 <a class="mt-2" href="{{route('producto.show', $producto)}}">
