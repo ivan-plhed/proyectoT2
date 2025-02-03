@@ -28,7 +28,5 @@ Route::post('login', [LoginController::class, 'login']);
 
 Route::get('carrito', [CarritoController::class, 'carrito'])->middleware('auth');
 
-Route::middleware('role', ['role:admin'])
-
 Route::resource('producto', ProductoController::class)->only('index', 'show');
 
