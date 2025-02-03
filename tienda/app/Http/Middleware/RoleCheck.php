@@ -16,10 +16,13 @@ class RoleCheck
      */
     public function handle(Request $request, Closure $next, $role)
     {
+        if (!auth()->check()) {
+            return redirect('login');
+        }
         if (auth()->user()->role === $role) {
             return $next($request);
         } else {
-            return redirect("/");
+            return redirect()->route('producto.index');
         }
     }
 }

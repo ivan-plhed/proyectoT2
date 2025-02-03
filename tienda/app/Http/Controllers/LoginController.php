@@ -14,7 +14,7 @@ class LoginController extends Controller
 
     function login(Request $request)
     {
-        $credenciales = $request->only('login', 'password');
+        $credenciales = $request->only('email', 'password');
         if (Auth::attempt($credenciales)) {
             return redirect()->intended(route('producto.index'));
         } else {
