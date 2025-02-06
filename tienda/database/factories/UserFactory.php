@@ -22,7 +22,6 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => bcrypt($name),
             'role' => 'user',
-            'api_token' => 'uc6KqmAIUj',
             'remember_token' => Str::random(10),
         ];
     }

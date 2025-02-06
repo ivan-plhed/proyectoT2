@@ -21,21 +21,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $productos = Producto::all();
     return view('producto.index', compact('productos'));
-});
+})->name('index');
 
 Route::get('login', [LoginController::class, 'loginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
-Route::get('logout', [LoginController::class, 'logout']);
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('carrito', [CarritoController::class, 'carrito'])->middleware('auth');
 
-Route::middleware('role:admin')->group(function() {
-    Route::resource('user', UserController::class);
-});
-
-Route::middleware('role:user')->group(function() {
-    Route::resource('user', UserController::class)->only('show');
-});
-
+Route::resource('user', UserController::class);
 Route::resource('producto', ProductoController::class)->only('index', 'show');
 

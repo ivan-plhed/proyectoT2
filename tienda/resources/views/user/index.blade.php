@@ -1,15 +1,13 @@
 @extends('plantilla')
 @section('titulo', 'Lista de usuarios')
 @section('contenido')
-    <table>
+    <table  class="table w-50">
         <tr>
             <th>DNI</th>
             <th>Nombre</th>
             <th>E-mail</th>
             <th>Rol</th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th colspan="3"><a href=" {{ route('user.create') }} "><button class="btn btn-primary">Nuevo Usuario</button></a></th>
         </tr>
         @forelse ($users as $user)
             <tr>

@@ -21,10 +21,19 @@ class UsersSeeder extends Seeder
         $admin->email = "admin@tienda.com";
         $admin->email_verified_at = now();
         $admin->password = bcrypt("admin");
-        $admin->api_token = "uc6KqmAIUj";
         $admin->remember_token = Str::random(10);
         $admin->role = "admin";
         $admin->save();
+
+        $user = new User();
+        $user->dni = "68574938Z";
+        $user->name = "user";
+        $user->email = "user@tienda.com";
+        $user->email_verified_at = now();
+        $user->password = bcrypt("user");
+        $user->remember_token = Str::random(10);
+        $user->role = "user";
+        $user->save();
 
         User::factory()->count(5)->create();
     }

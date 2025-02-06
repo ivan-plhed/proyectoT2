@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:admin')->except('show');
+        $this->middleware('auth')->only('show');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +42,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate(
+            [
+                'dni' => 'required|min:9|max:9',
+                'name' => 'required|min:3|max:255',
+                'email' => 'required|email|unique:users',
+                'password' => 'required',
+                'role' => 'required'
+            ]
+        );
+
+        $user = new User();
+        $user->fill($validated);
+        $user->save();
+
+        return redirect()->route('user.index');
     }
 
     /**
@@ -68,10 +88,30 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, User $user)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|min:5|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|min:6',
+            'role' => 'required'
+        ]);
+
+        if ($request->filled('password')) {
+            $validated['password'] = bcrypt($request->password);
+        } else {
+            unset($validated['password']);
+        }
+
+        $user->fill($validated);
+        $user->save();
+
+
+        return redirect()->route('user.index');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
