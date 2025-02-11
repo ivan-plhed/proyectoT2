@@ -1,7 +1,8 @@
 @extends('plantilla')
 @section('titulo', 'Login')
 @section('contenido')
-    <h1>Login</h1>
+    <div>
+        <h1>Login</h1>
     @if (!empty($error))
         <div class="text-danger">
             {{ $error }}
@@ -19,4 +20,5 @@
         </div>
         <input type="submit" name="enviar" value="Enviar" class="btn btn-dark btn-block">
     </form>
+    </div>
 @endsection

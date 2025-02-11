@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $user = new User();
+        $user->name = "api_user";
+        $user->email = "api_user@carrito.com";
+        $user->password = bcrypt("api_user");
+        $user->api_token = "JDysTQ0GAvGb2iCEFHdQ";
+        $user->save();
     }
 }

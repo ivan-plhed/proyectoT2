@@ -25,5 +25,12 @@
                 @endif
             </ul>
         </div>
+        <div class="mr-auto">
+            <a href="{{ route('carrito') }}">
+                <span class="material-symbols-outlined">
+                    shopping_cart
+                </span>
+            </a>
+        </div>
     </div>
 </nav>

@@ -13,6 +13,8 @@
 </head>
 <body>
     @include('partials.nav')
-    @yield('contenido')
+    <div class="d-flex justify-content-center">
+        @yield('contenido')
+    </div>
 </body>
 </html>

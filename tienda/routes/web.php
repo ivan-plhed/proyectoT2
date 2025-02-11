@@ -21,14 +21,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $productos = Producto::all();
     return view('producto.index', compact('productos'));
-})->name('index');
+})->middleware('auth')->name('index');
 
 Route::get('login', [LoginController::class, 'loginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('carrito', [CarritoController::class, 'carrito'])->middleware('auth');
+Route::get('carrito', [CarritoController::class, 'carrito'])->middleware('auth')->name('carrito');
+Route::get('carritoDelete', [CarritoController::class, 'deleteFromCarrito'])->middleware('auth')->name('carritoDelete');
+Route::get('carritoChange', [CarritoController::class, 'changeCantidadCarrito'])->middleware('auth')->name('carritoChange');
+Route::post('addItem/{producto}', [CarritoController::class, 'addItem'])->middleware('auth')->name('addItem');
 
 Route::resource('user', UserController::class);
-Route::resource('producto', ProductoController::class)->only('index', 'show');
+Route::resource('producto', ProductoController::class)->only('index', 'show')->middleware('auth');
 

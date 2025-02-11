@@ -15,7 +15,7 @@ class CreateCarritosTable extends Migration
     {
         Schema::create('carritos', function (Blueprint $table) {
             $table->id();
-            $table->string('dni');
+            $table->string('id_cliente');
             $table->integer('id_producto');
             $table->integer('cantidad');
             $table->timestamps();
