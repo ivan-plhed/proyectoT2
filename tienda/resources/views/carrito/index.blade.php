@@ -32,7 +32,7 @@
         </div>
         <div class="d-flex col-4 flex-column p-5">
             <h1 class="text-center w-100">Total: {{$precioTotal}}€ </h1>
-            <a href=""><button class="btn btn-primary w-100">Comprar</button></a>
+            <a href="{{route('confirmPedido')}}"><button class="btn btn-primary w-100">Comprar</button></a>
         </div>
     </div>
 @endsection

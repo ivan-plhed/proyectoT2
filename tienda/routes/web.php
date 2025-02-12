@@ -31,6 +31,7 @@ Route::get('carrito', [CarritoController::class, 'carrito'])->middleware('auth')
 Route::get('carritoDelete', [CarritoController::class, 'deleteFromCarrito'])->middleware('auth')->name('carritoDelete');
 Route::get('carritoChange', [CarritoController::class, 'changeCantidadCarrito'])->middleware('auth')->name('carritoChange');
 Route::post('addItem/{producto}', [CarritoController::class, 'addItem'])->middleware('auth')->name('addItem');
+Route::get('confirmPedido', [CarritoController::class, 'confirmPedido'])->middleware('auth')->name('confirmPedido');
 
 Route::resource('user', UserController::class);
 Route::resource('producto', ProductoController::class)->only('index', 'show')->middleware('auth');

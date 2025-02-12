@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LineaPedido;
+use App\Models\Pedido;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -74,5 +76,41 @@ class CarritoController extends Controller
                 );
             return redirect()->route('index');
         }
+    }
+
+    public function confirmPedido()
+    {
+        $response = Http::withToken(CarritoController::API_TOKEN)
+            ->get(CarritoController::API_URL . '/' . auth()->user()->id);
+
+            
+
+        $carrito = json_decode($response->body(), true);
+
+        $pedido = new Pedido();
+        $pedido->id_cliente = auth()->user()->id;
+        $pedido->email = auth()->user()->email;
+        $pedido->nombre = auth()->user()->name;
+        $pedido->fecha_compra = now();
+        $pedido->save();
+
+        foreach ($carrito as $linea_carrito) {
+            $pedido = Pedido::find($linea_carrito->id_producto);
+
+            $linea_pedido = new LineaPedido();
+            $linea_pedido->pedido_id = $pedido->id;
+            $linea_pedido->id_producto = $pedido->id;
+            $linea_pedido->nombre_producto = $pedido->name;
+            $linea_pedido->precio_producto = $pedido->price;
+            $linea_pedido->cantidad = $linea_carrito['cantidad'];
+            $linea_pedido->precio_total = $pedido->price * $linea_carrito['cantidad'];
+            $linea_pedido->save();
+        }
+
+        $lineas_pedidos = Pedido::find($pedido->id)->load();
+
+        ddd($lineas_pedidos);
+
+        return 'mongo';
     }
 }
