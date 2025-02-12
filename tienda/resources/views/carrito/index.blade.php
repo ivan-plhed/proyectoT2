@@ -7,21 +7,21 @@
         <div class="card col-12 m-3 p-0">
             <div class="row g-0">
               <div class="col-md-4">
-                <img src="{{ $linea_carrito['img_producto'] }}" class="img-fluid rounded-start" alt="{{ $linea_carrito['name_producto'] }}">
+                <img src="/imgs/{{ $linea_carrito['img_producto'] }}" class="img-fluid rounded-start" alt="{{ $linea_carrito['name_producto'] }}">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
-                  <h5 class="card-title">{{ $linea_carrito['name_producto'] }}</h5>
-                  <p class="card-text">Precio: {{floatval($linea_carrito['price_producto']) * intval($linea_carrito['cantidad'])}}€ ({{ $linea_carrito['price_producto'] }}/ud)</p>
-                    <form action="{{route('carritoChange')}}" method="GET">
+                  <h4 class="card-title">{{ $linea_carrito['name_producto'] }}</h4>
+                  <h5>{{number_format(floatval($linea_carrito['price_producto']) * intval($linea_carrito['cantidad']), 2)}}€</h5> <p class="card-text"> ({{ number_format($linea_carrito['price_producto'], 2) }}€/ud)</p>
+                    <form action="{{route('carrito-change')}}" method="GET">
                         <input name="id_producto" id="id_producto" type="text" value="{{$linea_carrito['id_producto']}}" hidden>
                         @csrf
                         @method('GET')
                         <label for="cantidad" class="me-2">Cantidad:</label>
                     <input type="number" class="form-control me-2 w-25 my-1" id="cantidad" name="cantidad" value="{{ $linea_carrito['cantidad'] }}" min="1">
-                    <input type="submit" class="btn btn-primary me-2 my-2" value="Actualizar">
+                    <input type="submit" class="btn btn-dark me-2 my-2" value="Actualizar">
                     </form>
-                    <a href="{{route('carritoDelete', $linea_carrito)}}"><button class="btn btn-danger eliminar-carrito" >Eliminar</button></a>
+                    <a href="{{route('carrito-delete', $linea_carrito)}}"><button class="btn btn-danger eliminar-carrito" >Eliminar</button></a>
                 </div>
               </div>
             </div>
@@ -32,7 +32,7 @@
         </div>
         <div class="d-flex col-4 flex-column p-5">
             <h1 class="text-center w-100">Total: {{$precioTotal}}€ </h1>
-            <a href="{{route('confirmPedido')}}"><button class="btn btn-primary w-100">Comprar</button></a>
+            <a href="{{route('confirm-pedido')}}"><button class="btn btn-dark w-100">Comprar</button></a>
         </div>
     </div>
 @endsection

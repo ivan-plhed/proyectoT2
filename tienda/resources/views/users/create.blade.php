@@ -1,7 +1,7 @@
 @extends('plantilla')
 @section('titulo', 'Nuevo usuario')
 @section('contenido')
-    <form action="{{ route('user.store') }}" method="POST">
+    <form action="{{ route('users.store') }}" method="POST">
         @csrf
         @method('POST')
         <div class="mb-3">
@@ -30,10 +30,6 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Crear</button>
+        <button type="submit" class="btn btn-dark">Crear</button>
     </form>
-
-
-
-    <a href="{{ route('user.index') }}">Volver a la lista</a>
 @endsection

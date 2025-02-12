@@ -4,13 +4,13 @@
     <div class="row container d-flex justify-content-evenly">
         @forelse ($productos as $producto)
             <div class="card d-flex flex-column m-4" style="width: 18rem;">
-                <a class="mt-2" href="{{route('producto.show', $producto)}}">
-                    <img src="{{$producto->img}}" class="card-img-top" alt="imagen-producto:{{$producto->name}}">
+                <a class="mt-2" href="{{route('productos.show', $producto)}}">
+                    <img src="/imgs/{{$producto->img}}" class="card-img-top" alt="imagen-producto:{{$producto->name}}">
                 </a>
                 <div class="card-body">
                     <h5 class="card-title">{{$producto->name}}</h5>
-                    <p class="card-text">{{$producto->price}}€</p>
-                    <a href="{{route('producto.show', $producto)}}" class="btn btn-primary">Ver producto</a>
+                    <p class="card-text">{{number_format($producto->price, 2)}}€</p>
+                    <a href="{{route('productos.show', $producto)}}" class="btn btn-dark">Ver producto</a>
                 </div>
             </div>
         @empty

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pedido;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('user.index', compact('users'));
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -31,7 +32,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        return view('users.create');
     }
 
     /**
@@ -56,7 +57,7 @@ class UserController extends Controller
         $user->fill($validated);
         $user->save();
 
-        return redirect()->route('user.index');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -67,7 +68,14 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('user.show', compact('user'));
+        if (($user->id == auth()->user()->id) || ('admin' == auth()->user()->rol)) {
+            $pedidos = Pedido::where('id_cliente', $user->id)->with('lineas')->get();
+            $pedidos->load('lineas');
+        } else {
+            $pedidos = null;
+        }
+
+        return view('users.show', compact('user', 'pedidos'));
     }
 
     /**
@@ -78,7 +86,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user.edit', compact('user'));
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -108,7 +116,7 @@ class UserController extends Controller
         $user->save();
 
 
-        return redirect()->route('user.index');
+        return redirect()->route('users.index');
     }
 
 
@@ -122,6 +130,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('user.index');
+        return redirect()->route('users.index');
     }
 }

@@ -43,7 +43,7 @@ class CarritoController extends Controller
                 'cantidad' => $request->input('cantidad')
             ]
         );
-        return redirect()->route('producto.index');
+        return redirect()->route('productos.index');
     }
 
     public function changeCantidadCarrito(Request $request)
@@ -78,14 +78,51 @@ class CarritoController extends Controller
         }
     }
 
+    // public function confirmPedido()
+    // {
+    //     $response = Http::withToken(CarritoController::API_TOKEN)
+    //         ->get(CarritoController::API_URL, ['id_cliente' => auth()->user()->id]);
+
+
+
+    //     $carrito = json_decode($response->body(), true);
+
+    //     $pedido = new Pedido();
+    //     $pedido->id_cliente = auth()->user()->id;
+    //     $pedido->email = auth()->user()->email;
+    //     $pedido->nombre = auth()->user()->name;
+    //     $pedido->fecha_compra = now();
+    //     $pedido->save();
+
+    //     foreach ($carrito as $linea_carrito) {
+    //         $pedido = Pedido::find($linea_carrito['id_producto']);
+
+    //         $linea_pedido = new LineaPedido();
+    //         $linea_pedido->pedido_id = $pedido->id;
+    //         $linea_pedido->id_producto = $pedido->id;
+    //         $linea_pedido->nombre_producto = $pedido->name;
+    //         $linea_pedido->precio_producto = $pedido->price;
+    //         $linea_pedido->cantidad = $linea_carrito['cantidad'];
+    //         $linea_pedido->precio_total = $pedido->price * $linea_carrito['cantidad'];
+    //         $linea_pedido->save();
+    //     }
+
+    //     $lineas_pedidos = Pedido::find($pedido->id)->load('linea');
+
+    //     ddd($lineas_pedidos);
+
+    //     return 'mongo';
+    // }
+
     public function confirmPedido()
     {
         $response = Http::withToken(CarritoController::API_TOKEN)
-            ->get(CarritoController::API_URL . '/' . auth()->user()->id);
-
-            
+            ->get(CarritoController::API_URL, ['id_cliente' => auth()->user()->id]);
 
         $carrito = json_decode($response->body(), true);
+
+        if (!$carrito)
+            return redirect()->route('productos.index');
 
         $pedido = new Pedido();
         $pedido->id_cliente = auth()->user()->id;
@@ -95,22 +132,27 @@ class CarritoController extends Controller
         $pedido->save();
 
         foreach ($carrito as $linea_carrito) {
-            $pedido = Pedido::find($linea_carrito->id_producto);
+            $producto = Producto::find($linea_carrito['id_producto']);
 
-            $linea_pedido = new LineaPedido();
-            $linea_pedido->pedido_id = $pedido->id;
-            $linea_pedido->id_producto = $pedido->id;
-            $linea_pedido->nombre_producto = $pedido->name;
-            $linea_pedido->precio_producto = $pedido->price;
-            $linea_pedido->cantidad = $linea_carrito['cantidad'];
-            $linea_pedido->precio_total = $pedido->price * $linea_carrito['cantidad'];
-            $linea_pedido->save();
+            if ($producto) {
+                $linea_pedido = new LineaPedido();
+                $linea_pedido->pedido_id = $pedido->id;
+                $linea_pedido->id_producto = $producto->id;
+                $linea_pedido->nombre_producto = $producto->name;
+                $linea_pedido->precio_producto = $producto->price;
+                $linea_pedido->cantidad = $linea_carrito['cantidad'];
+                $linea_pedido->precio_total = $producto->price * $linea_carrito['cantidad'];
+                $linea_pedido->save();
+            }
         }
 
-        $lineas_pedidos = Pedido::find($pedido->id)->load();
+        $pedido->load('lineas');
 
-        ddd($lineas_pedidos);
+        Http::withToken(CarritoController::API_TOKEN)
+            ->delete(
+                CarritoController::API_URL . "/" . auth()->user()->id,
+            );
 
-        return 'mongo';
+        return view('pedido.index', compact('pedido'));
     }
 }

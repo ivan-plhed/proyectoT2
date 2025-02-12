@@ -22,7 +22,7 @@ class RoleCheck
         if (auth()->user()->role === $role) {
             return $next($request);
         } else {
-            return redirect()->route('producto.index');
+            return redirect()->route('productos.index');
         }
     }
 }

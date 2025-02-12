@@ -1,7 +1,7 @@
 @extends('plantilla')
 @section('titulo', 'Editar usuario {{ $user->name }}')
 @section('contenido')
-    <form action="{{ route('user.update', $user) }}" method="POST">
+    <form action="{{ route('users.update', $user) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="mb-3">
@@ -26,10 +26,6 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Editar</button>
+        <button type="submit" class="btn btn-dark">Editar</button>
     </form>
-
-
-
-    <a href="{{ route('user.index') }}">Volver a la lista</a>
 @endsection

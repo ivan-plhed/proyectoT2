@@ -16,7 +16,7 @@ class LoginController extends Controller
     {
         $credenciales = $request->only('email', 'password');
         if (Auth::attempt($credenciales)) {
-            return redirect()->intended(route('producto.index'));
+            return redirect()->intended(route('productos.index'));
         } else {
             $error = 'Usuario incorrecto';
             return view('auth.login', compact('error'));
@@ -26,6 +26,6 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('producto.index');
+        return redirect()->route('productos.index');
     }
 }
