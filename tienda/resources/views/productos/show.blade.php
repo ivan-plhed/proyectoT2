@@ -1,5 +1,5 @@
 @extends('plantilla')
-@section('titulo', 'Ver usuario {{ $producto->name }}')
+@section('titulo', 'Ver producto')
 @section('contenido')
 
     <div class="p-5">
